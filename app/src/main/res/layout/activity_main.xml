@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_marginHorizontal="30dp"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <LinearLayout
         app:layout_constraintTop_toTopOf="parent"
@@ -21,7 +21,7 @@
             android:id="@+id/txt_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Barcelona, ES"
+            android:text="Barcelona, ES"
             android:textSize="24sp"
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +34,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/rounded_card"
         android:backgroundTint="@color/colorBackgroundCardOne"
-        android:elevation="8dp"
+        android:elevation="4dp"
         android:id="@+id/linear_city"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,9 +44,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-
         <LinearLayout
-            android:layout_marginTop="-150sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -60,7 +58,7 @@
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                tools:text="today is Monday" />
+                android:text="Domingo" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,8 +71,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                tools:text="23"
-                android:textSize="100sp"
+                android:paddingLeft="18dp"
+                android:text="23"
+                android:textSize="90sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:layout_marginTop="-20dp"
-                tools:text="º"
+                android:text="º"
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -95,6 +94,20 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="soleado"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/white"/>
+
         </LinearLayout>
 
 
@@ -111,22 +124,65 @@
                 android:orientation="vertical"
                 android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/img_weatherMinImg"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center" />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txt_weatherMinTemp"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="Max"/>
+
+                    <TextView
+                        android:id="@+id/txt_maxTemp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="25º" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    tools:text="Thursday" />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="Min" />
+
+                    <TextView
+                        android:id="@+id/txt_minTemp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="12º" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -134,18 +190,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/img_weatherMaxImg"
-                    android:src="@drawable/ic_clear_day"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" />
-
-
-
-
+                    android:layout_width="120dp"
+                    android:layout_height="150dp"
+                    android:gravity="center"
+                    android:src="@drawable/ic_clear_day" />
             </LinearLayout>
 
         </LinearLayout>
@@ -156,17 +209,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/linear_city"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:scrollbars="none"/>
     </LinearLayout>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

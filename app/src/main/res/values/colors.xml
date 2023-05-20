@@ -5,11 +5,15 @@
     <color name="colorPrimary">#FEDBD0</color>
     <color name="colorSecondary">#FEEAE6</color>
     <color name="colorBackground">#FFFFFF</color>
-    <color name="colorBackgroundCardOne">#6f5ef3</color>
+    <color name="colorBackgroundCardOne">#00B0FF</color>
     <color name="colorText">#442C2E</color>
     <color name="colorButton">#1abc9c</color>
     <color name="colorSelection">#C7C7CC</color>
     <color name="colorToolbar">#F7F7F7</color>
     <color name="colorLogo">#1abc9c</color>
-    <color name="colorCard">#37e3b1</color>
+    <color name="colorCard">#712F79</color>
+    <color name="colorCard2">#21E891</color>
+    <color name="colorCard3">#FF8C42</color>
+    <color name="colorCard4">#A23E48</color>
+    <color name="colorCard5">#B28B84</color>
 </resources>

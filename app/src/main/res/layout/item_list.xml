@@ -2,26 +2,27 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/rounded_card"
     android:id="@+id/box_clic_Show"
+    android:layout_marginRight="10dp"
+    android:elevation="10dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="140dp"
+        android:layout_width="160dp"
         android:layout_height="220dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp"
-        android:background="@drawable/rounded_card"
+
         android:baselineAligned="false"
-        android:elevation="4dp"
+        android:elevation="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txt_weatherCard"
+            android:id="@+id/txtItemCurrentDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -29,26 +30,29 @@
             android:minWidth="48dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            tools:text="Thursday" />
+            android:text="Thursday" />
 
         <ImageView
-            android:id="@+id/img_weatherCard"
+            android:layout_marginVertical="10dp"
+            android:id="@+id/imgItemWeatherIcon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_clear_day"
             android:gravity="center" />
 
         <TextView
-            android:id="@+id/txt_tempCard"
+            android:id="@+id/txtItemoCurrentTemp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:minWidth="48dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            tools:text="20º" />
+            android:text="20º" />
 
         <LinearLayout
-            android:id="@+id/btn_box"
+            android:id="@+id/itemMaxMin"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -61,20 +65,20 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/img_weatherMinImg"
+                    android:id="@+id/imgItemWeatherMin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/ic_min_temp"
                     android:gravity="center" />
 
                 <TextView
-                    android:id="@+id/txt_weatherMinTemp"
+                    android:id="@+id/txtItemWeatherMinTemp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    tools:text="Thursday" />
+                    android:text="12º" />
 
 
             </LinearLayout>
@@ -86,20 +90,20 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/img_weatherMaxImg"
+                    android:src="@drawable/ic_max_temp"
+                    android:id="@+id/imgItemWeatherMax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center" />
 
                 <TextView
-                    android:id="@+id/txt_weatherMaxTemp"
+                    android:id="@+id/txtItemWeatherMaxTemp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    tools:text="Monday" />
+                    android:text="26º" />
 
 
             </LinearLayout>
