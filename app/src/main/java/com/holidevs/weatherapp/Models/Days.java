@@ -1,20 +1,21 @@
-package com.holidevs.weatherapp.Days;
+package com.holidevs.weatherapp.Models;
 
-import android.widget.ImageView;
+import java.util.List;
 
 public class Days {
 
     private String day;
 
-    private ImageView icon;
+    private String icon;
 
-    private String currentTemp;
+    private int currentTemp;
 
-    private String maxTemp;
+    private int maxTemp;
 
-    private String minTemp;
+    private int minTemp;
 
-    public Days(String day, ImageView icon, String currentTemp, String maxTemp, String minTemp) {
+
+    public Days(String day, String icon, int currentTemp, int maxTemp, int minTemp) {
         this.day = day;
         this.icon = icon;
         this.currentTemp = currentTemp;
@@ -26,7 +27,7 @@ public class Days {
     public String toString() {
         return "Days{" +
                 "day='" + day + '\'' +
-                ", icon=" + icon +
+                //", icon=" + icon +
                 ", currentTemp='" + currentTemp + '\'' +
                 ", maxTemp='" + maxTemp + '\'' +
                 ", minTemp='" + minTemp + '\'' +
@@ -37,19 +38,20 @@ public class Days {
         return day;
     }
 
-    public ImageView getIcon() {
+
+    public String getIcon() {
         return icon;
     }
 
-    public String getCurrentTemp() {
+    public int getCurrentTemp() {
         return currentTemp;
     }
 
-    public String getMaxTemp() {
+    public int getMaxTemp() {
         return maxTemp;
     }
 
-    public String getMinTemp() {
+    public int getMinTemp() {
         return minTemp;
     }
 
@@ -57,19 +59,20 @@ public class Days {
         this.day = day;
     }
 
-    public void setIcon(ImageView icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
-
-    public void setCurrentTemp(String currentTemp) {
+    public void setCurrentTemp(int currentTemp) {
         this.currentTemp = currentTemp;
     }
 
-    public void setMaxTemp(String maxTemp) {
+    public void setMaxTemp(int maxTemp) {
         this.maxTemp = maxTemp;
     }
 
-    public void setMinTemp(String minTemp) {
+    public void setMinTemp(int minTemp) {
         this.minTemp = minTemp;
     }
+
+
 }

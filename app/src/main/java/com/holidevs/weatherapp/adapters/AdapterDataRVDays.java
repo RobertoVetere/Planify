@@ -3,19 +3,28 @@ package com.holidevs.weatherapp.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.holidevs.weatherapp.Days.Days;
+import com.holidevs.weatherapp.Models.Days;
 import com.holidevs.weatherapp.R;
+import com.holidevs.weatherapp.activities.MainActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.ViewHolderDays>{
 
     private ArrayList<Days> listDays;
+
+    private MainActivity mainActivity;
 
     public AdapterDataRVDays(ArrayList<Days> listDays) {
         this.listDays = listDays;
@@ -33,12 +42,43 @@ public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.Vi
     public void onBindViewHolder(@NonNull ViewHolderDays holder, int position) {
         // Obtener el objeto Days en la posición actual
         Days days = listDays.get(position);
+        String currentTemp = String.valueOf(days.getCurrentTemp()) + "º";
+        String maxTemp = String.valueOf(days.getMaxTemp()) + "º";
+        String minTemp = String.valueOf(days.getMinTemp()) + "º";
+        String dateRaw = days.getDay();
+        String[] dateSplit = dateRaw.split(" ");
+
+        int icon = MainActivity.obtenerCodigoImagen(days.getIcon());
+
+        String date = convertDateToDayOfWeek(dateSplit[0]);
 
         // Actualizar los elementos de la interfaz de usuario con los datos de Days
-        holder.txtDay.setText(days.getDay());
-        // Actualiza el resto de elementos según sea necesario
+        holder.txtDay.setText(date);
+        holder.txtTemperature.setText(currentTemp);
+        //holder.txtMaxTemperature.setText(maxTemp);
+        //holder.txtMinTemperature.setText(minTemp);
+        holder.icon.setImageResource(icon);
 
-        setCardBackgroundColor(holder,position);
+        setCardBackgroundColor(holder, position);
+
+    }
+
+    public static String convertDateToDayOfWeek(String dateString) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = inputFormat.parse(dateString);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+            SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private void setCardBackgroundColor(@NonNull ViewHolderDays holder,int position) {
@@ -65,19 +105,37 @@ public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.Vi
         holder.itemView.setBackgroundResource(colorResId);
     }
 
+    public void setDaysList(ArrayList<Days> newDaysList) {
+        listDays = new ArrayList<>();
+        listDays.clear();
+        listDays.addAll(newDaysList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return listDays.size();
+        if (listDays == null) {
+            return 0; // Si la lista es nula, devuelve 0
+        } else {
+            return listDays.size(); // Si la lista no es nula, devuelve el tamaño de la lista
+        }
     }
 
     public static class ViewHolderDays extends RecyclerView.ViewHolder {
         TextView txtDay;
-        // Agrega referencias a los elementos de tu diseño de elemento de lista
+        TextView txtTemperature;
+        //TextView txtMaxTemperature;
+        //TextView txtMinTemperature;
+
+        ImageView icon;
 
         public ViewHolderDays(@NonNull View itemView) {
             super(itemView);
             txtDay = itemView.findViewById(R.id.txtItemCurrentDay);
-            // Inicializa las demás referencias según tus elementos de diseño
+            txtTemperature = itemView.findViewById(R.id.txtItemoCurrentTemp);
+            //txtMaxTemperature = itemView.findViewById(R.id.txtItemWeatherMaxTemp);
+            //txtMinTemperature = itemView.findViewById(R.id.txtItemWeatherMinTemp);
+            icon = itemView.findViewById(R.id.imgItemWeatherIcon);
         }
     }
 }

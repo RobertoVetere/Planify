@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="160dp"
-        android:layout_height="220dp"
+        android:layout_height="160dp"
 
         android:baselineAligned="false"
         android:elevation="8dp"
@@ -30,7 +30,7 @@
             android:minWidth="48dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="Thursday" />
+            android:text="" />
 
         <ImageView
             android:layout_marginVertical="10dp"
@@ -48,68 +48,68 @@
             android:minWidth="48dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="20º" />
+            android:text="" />
+        <!-- >
+              <LinearLayout
+                  android:id="@+id/itemMaxMin"
+                  android:layout_marginTop="20dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/itemMaxMin"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_weight="1">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                      <ImageView
+                          android:id="@+id/imgItemWeatherMin"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:src="@drawable/ic_min_temp"
+                          android:gravity="center" />
 
-                <ImageView
-                    android:id="@+id/imgItemWeatherMin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_min_temp"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/txtItemWeatherMinTemp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:text="12º" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:src="@drawable/ic_max_temp"
-                    android:id="@+id/imgItemWeatherMax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/txtItemWeatherMaxTemp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:text="26º" />
+                      <TextView
+                          android:id="@+id/txtItemWeatherMinTemp"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textColor="@color/white"
+                          android:textSize="16sp"
+                          android:text="" />
 
 
-            </LinearLayout>
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_weight="1">
+
+                      <ImageView
+                          android:src="@drawable/ic_max_temp"
+                          android:id="@+id/imgItemWeatherMax"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center" />
+
+                      <TextView
+                          android:id="@+id/txtItemWeatherMaxTemp"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textColor="@color/white"
+                          android:textSize="16sp"
+                          android:text="" />
+
+
+                  </LinearLayout>
 
         </LinearLayout>
-
+-->
     </LinearLayout>
 
 
