@@ -20,11 +20,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.ViewHolderDays>{
+public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.ViewHolderDays> {
 
     private ArrayList<Days> listDays;
 
-    private MainActivity mainActivity;
 
     public AdapterDataRVDays(ArrayList<Days> listDays) {
         this.listDays = listDays;
@@ -42,9 +41,9 @@ public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.Vi
     public void onBindViewHolder(@NonNull ViewHolderDays holder, int position) {
         // Obtener el objeto Days en la posición actual
         Days days = listDays.get(position);
-        String currentTemp = String.valueOf(days.getCurrentTemp()) + "º";
-        String maxTemp = String.valueOf(days.getMaxTemp()) + "º";
-        String minTemp = String.valueOf(days.getMinTemp()) + "º";
+        String currentTemp = days.getCurrentTemp() + "º";
+        String maxTemp = days.getMaxTemp() + "º";
+        String minTemp = days.getMinTemp() + "º";
         String dateRaw = days.getDay();
         String[] dateSplit = dateRaw.split(" ");
 
@@ -61,6 +60,15 @@ public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.Vi
 
         setCardBackgroundColor(holder, position);
 
+    }
+
+    @Override
+    public int getItemCount() {
+        if (listDays == null) {
+            return 0; // Si la lista es nula, devuelve 0
+        } else {
+            return listDays.size(); // Si la lista no es nula, devuelve el tamaño de la lista
+        }
     }
 
     public static String convertDateToDayOfWeek(String dateString) {
@@ -81,7 +89,7 @@ public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.Vi
         return null;
     }
 
-    private void setCardBackgroundColor(@NonNull ViewHolderDays holder,int position) {
+    private void setCardBackgroundColor(@NonNull ViewHolderDays holder, int position) {
 
         // Asignar un color diferente a cada tarjeta
         int colorResId;
@@ -112,14 +120,6 @@ public class AdapterDataRVDays extends RecyclerView.Adapter<AdapterDataRVDays.Vi
         notifyDataSetChanged();
     }
 
-    @Override
-    public int getItemCount() {
-        if (listDays == null) {
-            return 0; // Si la lista es nula, devuelve 0
-        } else {
-            return listDays.size(); // Si la lista no es nula, devuelve el tamaño de la lista
-        }
-    }
 
     public static class ViewHolderDays extends RecyclerView.ViewHolder {
         TextView txtDay;

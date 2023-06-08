@@ -1,13 +1,10 @@
 package com.holidevs.weatherapp.activities;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,27 +13,25 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.holidevs.weatherapp.R;
 import com.holidevs.weatherapp.adapters.AdapterDataRVDays;
 import com.holidevs.weatherapp.Models.Days;
-
+import com.holidevs.weatherapp.database.DatabaseManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.ResourceBundle;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private AdapterDataRVDays adapter;
     private ArrayList<Days> daysList;
 
-    private AppCompatButton btnPlansInYourCity;
+    private Button btnPlansInYourCity;
+
+    private AppCompatButton btnGoogleMaps;
 
     private TextView city;
 
     private ImageView weatherImg;
-
-    private PlansInYourCity plansInYourCity;
 
     private TextView currentTemp;
 
@@ -65,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private long lastRequestTimePronostico = 0;
     private static final long MINIMUM_REQUEST_INTERVAL = 60000;
 
-    final String apiKey = "";
+    final String openWeahterApiKey = "YOUR_OPENWEATHER_API_KEY";
 
     private LocationManager locationManager;
 
@@ -75,25 +70,43 @@ public class MainActivity extends AppCompatActivity {
 
     private double longitude;
 
+    private DatabaseManager databaseManager;
+
+    private View preLoaderView;
+
+    private boolean isLocationEnabled = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initPreLoader();
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+            if (isLocationEnabled) {
+                if (latitude == 0 && longitude == 0) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
 
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
+                    Log.i("onActivityResultCheck", "latitude On Location OK IF" + latitude);
+                    isLocationEnabled = false;
+                    // Detén las actualizaciones de ubicación
+                    locationManager.removeUpdates(locationListener);
+                }
+
+            }
 
                 obtenerDatosTiempo(latitude, longitude);
                 obtenerPronosticoExtendido(latitude, longitude);
+                Log.i("onActivityResultCheck", "latitude On Location KO IF" + latitude);
 
-                //System.out.println("Latitud: " + latitude + ", Longitud: " + longitude);
+
             }
-
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {}
 
@@ -104,16 +117,64 @@ public class MainActivity extends AppCompatActivity {
             public void onProviderDisabled(String provider) {}
         };
 
-        // Verificar y solicitar permisos de ubicación
+        // Verificar si ya tienes los permisos de ubicación
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            // Verificar si es la primera vez que se obtiene la ubicación
+            if (isLocationEnabled) {
+                // Realizar la geolocalización inicial
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
         } else {
+            // Solicitar permisos de ubicación
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
+
 
         initItems();
         initRecyclerView();
         setOnclickListeners();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("onActivityResultCheck", "OK");
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            double receivedLatitude = data.getDoubleExtra("latitude", 0);
+            double receivedLongitude = data.getDoubleExtra("longitude", 0);
+            initPreLoader();
+            // Verificar si se recibieron las coordenadas extras
+            if (receivedLatitude != 0 && receivedLongitude != 0) {
+                // Usar las coordenadas extras en lugar de las obtenidas del GPS
+                Log.i("onActivityResultCheck", "latitude" + latitude);
+                latitude = receivedLatitude;
+                longitude = receivedLongitude;
+                lastRequestTimeDatos = 0;
+                lastRequestTimePronostico = 0;
+                obtenerDatosTiempo(latitude, longitude);
+                obtenerPronosticoExtendido(latitude, longitude);
+                Log.i("onActivityResultCheck", "latitude" + latitude);
+
+            }
+        }
+    }
+
+    private void initPreLoader() {
+        preLoaderView = findViewById(R.id.pre_loader);
+        preLoaderView.setVisibility(View.VISIBLE);
+    }
+
+    private void handleApiDataLoaded() {
+        preLoaderView.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Cerrar la conexión a la base de datos antes de destruir la actividad
+        super.onDestroy();
+        if (databaseManager != null) {
+            databaseManager.close();
+        }
     }
 
     @Override
@@ -139,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
         descriptionWeather = findViewById(R.id.descriptionWeather);
         weatherImg = findViewById(R.id.weatherImg);
         btnPlansInYourCity = findViewById(R.id.btnPlansInYourCity);
+        btnGoogleMaps = findViewById(R.id.btnGoogleMaps);
+
     }
 
     private void initRecyclerView() {
@@ -159,24 +222,30 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), PlansInYourCity.class);
             intent.putExtra("city", city2);
             intent.putExtra("descriptionWeather", descriptionWeather2);
-
+            intent.putExtra("latitude", latitude);
+            intent.putExtra("longitude", longitude);
             startActivity(intent);
+        });
+
+        btnGoogleMaps.setOnClickListener(v ->{
+            Intent intentGM = new Intent(getApplicationContext(), MapsActivity.class);
+            intentGM.putExtra("latitude", latitude);
+            intentGM.putExtra("longitude", longitude);
+            //finish();
+            startActivityForResult(intentGM, 1);
         });
     }
 
     private void obtenerDatosTiempo(double latitud, double longitud) {
-
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastRequestTimeDatos >= MINIMUM_REQUEST_INTERVAL) {
-            String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitud + "&lon=" + longitud + "&appid=" + apiKey;
+            String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitud + "&lon=" + longitud + "&appid=" + openWeahterApiKey;
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.d("response", response);
-                    String output = "";
                     try {
-
                         JSONObject jsonResponse = new JSONObject(response);
                         JSONArray jsonArray = jsonResponse.getJSONArray("weather");
                         JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
@@ -193,18 +262,17 @@ public class MainActivity extends AppCompatActivity {
                         String cityName = jsonResponse.getString("name");
                         String icon = jsonObjectWeather.getString("icon");
 
-                        setCurrentWeather(temp, temp_max,temp_min,countryName,cityName, description, icon);
+                        runOnUiThread(() -> setCurrentWeather(temp, temp_max, temp_min, countryName, cityName, description, icon));
+
+                        String setBtn = "Planes para hoy en " + cityName;
+                        btnPlansInYourCity.setText(setBtn);
+                        Log.i("onActivityResultCheck", "llamas a OpenApi OK" + latitude);
 
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            }, error -> Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show());
 
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(stringRequest);
@@ -213,11 +281,10 @@ public class MainActivity extends AppCompatActivity {
             lastRequestTimeDatos = currentTime;
         }
     }
-
     private void obtenerPronosticoExtendido(double latitud, double longitud) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastRequestTimePronostico >= MINIMUM_REQUEST_INTERVAL) {
-                String url = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitud + "&lon=" + longitud + "&appid=" + apiKey;
+                String url = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitud + "&lon=" + longitud + "&appid=" + openWeahterApiKey;
 
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
                     Log.d("response", response);
@@ -229,7 +296,8 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<Days> nextFiveDays = parseNextFiveDays(jsonArray);
 
                         // Pasa los datos al adaptador del RecyclerView
-                       adapter.setDaysList(nextFiveDays);
+                        runOnUiThread(() -> adapter.setDaysList(nextFiveDays));
+
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -241,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 // Actualizar el tiempo de la última solicitud
                 lastRequestTimePronostico = currentTime;
             }
+
         }
 
     private ArrayList<Days> parseNextFiveDays(JSONArray jsonArray) throws JSONException {
@@ -261,11 +330,11 @@ public class MainActivity extends AppCompatActivity {
 
             String icon = weatherObject.getString("icon");
 
-
             nextFiveDays.add(new Days(date,icon, temp, min_temp, max_temp));
         }
-
+        handleApiDataLoaded();
         return nextFiveDays;
+
     }
 
     private void setCurrentWeather(int temp, int temp_max, int temp_min, String countryName, String cityName, String description, String icon) {

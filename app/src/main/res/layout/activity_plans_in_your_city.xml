@@ -7,41 +7,99 @@
     tools:context=".activities.PlansInYourCity">
 
     <LinearLayout
+        android:id="@+id/linear_map"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/map_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTextPlan"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="20dp"
-        android:orientation="vertical">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_map">
 
         <TextView
+            android:id="@+id/txtTitlePlans"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Sugerencias para planes"
+            android:text=""
             android:textColor="#555555"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Planes para hoy" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:background="@drawable/rounded_card">
 
             <TextView
                 android:id="@+id/textChatGptResponse"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_height="100dp"
                 android:elevation="4dp"
                 android:padding="10dp"
                 android:text=""
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Ir al cine :)" />
 
-        </ScrollView>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rvPlans"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutTextPlan">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerID_plans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSavePlan"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_card"
+        android:backgroundTint="@color/colorButton"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Guardar Plan"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvPlans" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOtroPlan"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_card"
+        android:backgroundTint="@color/colorButton"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Otro Plan"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvPlans" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

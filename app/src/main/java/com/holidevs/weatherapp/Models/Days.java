@@ -1,7 +1,5 @@
 package com.holidevs.weatherapp.Models;
 
-import java.util.List;
-
 public class Days {
 
     private String day;
