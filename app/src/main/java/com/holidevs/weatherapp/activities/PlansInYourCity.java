@@ -44,7 +44,7 @@ import java.util.Map;
 
 public class PlansInYourCity extends AppCompatActivity {
 
-    private String OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";
+   // private String OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";
 
     private static final String URL = "https://api.openai.com/v1/chat/completions";
 

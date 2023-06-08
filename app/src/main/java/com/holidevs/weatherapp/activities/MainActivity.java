@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private long lastRequestTimePronostico = 0;
     private static final long MINIMUM_REQUEST_INTERVAL = 60000;
 
-    final String openWeahterApiKey = "YOUR_OPENWEATHER_API_KEY";
+   // final String openWeahterApiKey = "YOUR_OPENWEATHER_API_KEY";
 
     private LocationManager locationManager;
 
