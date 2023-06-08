@@ -1,4 +1,5 @@
-# Planify
+# Planify ![Logo Planify](https://github.com/RobertoVetere/aiWeatherApp/assets/42187726/f8c26d06-7ba3-45b6-b89d-231746706622)
+
 
 Una interesante APP con IA que te sugiere planes en base al tiempo que hace en tu zona. 
 
